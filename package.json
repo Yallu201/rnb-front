@@ -23,9 +23,9 @@
     "web-vitals": "^0.2.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public"
   },
