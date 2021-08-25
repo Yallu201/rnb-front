@@ -1,15 +1,14 @@
-import React from 'react';
-import { ChakraProvider, theme, Flex } from '@chakra-ui/react';
+import { ChakraProvider, theme } from '@chakra-ui/react';
 import { Header, Content, Footer } from './containers/sections';
 
 function App() {
   return (
     <ChakraProvider theme={theme}>
-      <Flex direction="column" h="100vh">
+      <div className="flex flex-col h-screen">
         <Header />
         <Content />
         <Footer />
-      </Flex>
+      </div>
     </ChakraProvider>
   );
 }
