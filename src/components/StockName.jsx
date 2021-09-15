@@ -1,12 +1,12 @@
 import { Button, Text } from '@chakra-ui/react';
 import { useCallback, memo } from 'react';
 import { useDispatch } from 'react-redux';
-import { selectItem } from '../modules/sample';
+import { selectItem } from '../modules/stock';
 
-const StockName = ({ bookmark, name }) => {
+const StockName = ({ bookmark, stockCode, stockName }) => {
   const dispatch = useDispatch();
   const onClick = useCallback(() => {
-    dispatch(selectItem(name));
+    dispatch(selectItem(stockName));
   }, []);
   return (
     <Button
@@ -16,7 +16,9 @@ const StockName = ({ bookmark, name }) => {
       onClick={onClick}
       isFullWidth
     >
-      <Text isTruncated>{name}</Text>
+      <Text isTruncated>
+        {stockCode} {stockName}
+      </Text>
     </Button>
   );
 };

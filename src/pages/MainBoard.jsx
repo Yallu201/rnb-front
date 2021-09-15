@@ -10,8 +10,15 @@ import { useState } from 'react';
 import { useCallback, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import StockNameList from '../containers/lists/StockNameList';
-import { changeKey } from '../modules/sample';
+import { useMount } from '../hooks';
+import { changeKey } from '../modules/stock';
+import { fetchStockList } from '../modules/stock';
+
 const MainBoard = () => {
+  const dispatch = useDispatch();
+  useMount(() => {
+    dispatch(fetchStockList('KOSPI'));
+  });
   return (
     <div className="grid grid-cols-3 gap-4 h-full">
       <div className="col-span-2 grid grid-rows-2 gap-4 ">
@@ -25,12 +32,12 @@ const MainBoard = () => {
   );
 };
 const StackDetail = () => {
-  const selectedSample = useSelector(_ => _.sample.selected);
-  const { name, email, phone } = selectedSample;
+  const selectedStock = useSelector(_ => _.stock.selected);
+  const { stockCode, stockName } = selectedStock;
   return (
     <div className="">
-      <Text fontSize="3xl">{name}</Text>
-      <Text>{email}</Text>
+      <Text fontSize="3xl">{stockCode}</Text>
+      <Text>{stockName}</Text>
     </div>
   );
 };

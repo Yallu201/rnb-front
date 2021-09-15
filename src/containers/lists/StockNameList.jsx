@@ -1,16 +1,17 @@
-import { ListItem, UnorderedList } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 import StockName from '../../components/StockName';
 
 const StockNameList = () => {
-  const key = useSelector(_ => _.sample.key);
-  const list = useSelector(_ => _.sample.list);
+  const key = useSelector(_ => _.stock.key);
+  const list = useSelector(_ => _.stock.list);
   return (
     <div>
       {list
-        .filter(({ name }) => name.toLowerCase().includes(key.toLowerCase()))
-        .map(stock => (
-          <StockName key={stock.name} {...stock} />
+        .filter(({ stockName }) =>
+          stockName.toLowerCase().includes(key.toLowerCase())
+        )
+        .map(item => (
+          <StockName key={item.stockCode} {...item} />
         ))}
     </div>
   );
