@@ -1,19 +1,9 @@
-import { SearchIcon } from '@chakra-ui/icons';
-import {
-  IconButton,
-  Input,
-  InputGroup,
-  InputRightElement,
-  Text,
-} from '@chakra-ui/react';
-import { useState } from 'react';
-import { useCallback, useRef } from 'react';
+import { Text } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import StockNameList from '../containers/lists/StockNameList';
 import { useMount } from '../hooks';
-import { changeKey } from '../modules/stock';
 import { fetchStockList } from '../modules/stock';
-
+import StockNameSearchBar from '../components/StockNameSearchBar';
 const MainBoard = () => {
   const dispatch = useDispatch();
   useMount(() => {
@@ -42,41 +32,9 @@ const StackDetail = () => {
   );
 };
 const StackList = () => {
-  const dispatch = useDispatch();
-  const [searchKey, setSearchKey] = useState('');
-  const onChange = useCallback(e => setSearchKey(e.target.value), []);
-  const onSearch = useCallback(
-    e => {
-      if (e.type === 'click') {
-        dispatch(changeKey(searchKey));
-      }
-      if (e.type === 'keydown' && e.code === 'Enter') {
-        dispatch(changeKey(e.target.value));
-      }
-    },
-    [searchKey]
-  );
   return (
     <div className="py-3 px-2 border rounded">
-      <InputGroup>
-        <Input
-          placeholder="종목명 입력"
-          className="mb-2"
-          value={searchKey}
-          onChange={onChange}
-          onKeyDown={onSearch}
-        />
-        <InputRightElement
-          children={
-            <IconButton
-              variant="unstyled"
-              isActive={false}
-              icon={<SearchIcon />}
-            />
-          }
-          onClick={onSearch}
-        />
-      </InputGroup>
+      <StockNameSearchBar />
       <StockNameList />
     </div>
   );
