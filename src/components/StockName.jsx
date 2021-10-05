@@ -1,4 +1,4 @@
-import { Box, Text, useColorModeValue } from '@chakra-ui/react';
+import { Box, useColorModeValue } from '@chakra-ui/react';
 import { useCallback, memo } from 'react';
 import { useDispatch } from 'react-redux';
 import { selectItem, fetchStockDetail } from '../modules/stock';
@@ -16,9 +16,9 @@ const StockName = ({ bookmark, stockCode, stockName }) => {
       className={`p-2 pl-4 mb-1 cursor-pointer rounded ${hoverColor}`}
       onClick={onClick}
     >
-      <Text isTruncated>
+      <Box>
         {stockCode} {stockName}
-      </Text>
+      </Box>
     </Box>
   );
 };
