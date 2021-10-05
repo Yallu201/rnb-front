@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { Flex, Text, Button } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import StockNameList from '../containers/lists/StockNameList';
@@ -25,11 +25,18 @@ const MainBoard = () => {
 };
 const StackDetail = () => {
   const dispatch = useDispatch();
+  const [durations] = useState([
+    'ONEMONTH',
+    'THREEMONTH',
+    'SIXMONTH',
+    'ONEYEAR',
+    'TENYEARS',
+  ]);
   const duration = useSelector(_ => _.stock.duration);
   const selectedStock = useSelector(_ => _.stock.selected);
   const { stockCode, stockName } = selectedStock;
-  const onChangeDuration = useCallback(duration =>
-    dispatch(changeDuration(duration))
+  const onChangeDuration = useCallback(e =>
+    dispatch(changeDuration(e.target.id))
   );
   return (
     <div className="">
@@ -40,46 +47,17 @@ const StackDetail = () => {
         </Text>
       </Flex>
       <Flex className="mb-6">
-        <Button
-          className="mr-1"
-          size="sm"
-          variant={duration === 'ONEMONTH' ? 'solid' : 'ghost'}
-          onClick={() => onChangeDuration('ONEMONTH')}
-        >
-          ONEMONTH
-        </Button>
-        <Button
-          className="mr-1"
-          size="sm"
-          variant={duration === 'THREEMONTH' ? 'solid' : 'ghost'}
-          onClick={() => onChangeDuration('THREEMONTH')}
-        >
-          THREEMONTH
-        </Button>
-        <Button
-          className="mr-1"
-          size="sm"
-          variant={duration === 'SIXMONTH' ? 'solid' : 'ghost'}
-          onClick={() => onChangeDuration('SIXMONTH')}
-        >
-          SIXMONTH
-        </Button>
-        <Button
-          className="mr-1"
-          size="sm"
-          variant={duration === 'ONEYEAR' ? 'solid' : 'ghost'}
-          onClick={() => onChangeDuration('ONEYEAR')}
-        >
-          ONEYEAR
-        </Button>
-        <Button
-          className="mr-1"
-          size="sm"
-          variant={duration === 'TENYEARS' ? 'solid' : 'ghost'}
-          onClick={() => onChangeDuration('TENYEARS')}
-        >
-          TENYEARS
-        </Button>
+        {durations.map(d => (
+          <Button
+            id={d}
+            className="mr-1"
+            size="sm"
+            variant={duration === d ? 'solid' : 'ghost'}
+            onClick={onChangeDuration}
+          >
+            {d}
+          </Button>
+        ))}
       </Flex>
       <StockChart />
     </div>
