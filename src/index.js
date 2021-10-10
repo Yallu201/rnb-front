@@ -6,12 +6,13 @@ import reportWebVitals from './reportWebVitals';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import store from './store';
+import { BrowserRouter } from 'react-router-dom';
 
 ReactDOM.render(
   <Provider store={store}>
-    <StrictMode>
+    <BrowserRouter>
       <App />
-    </StrictMode>
+    </BrowserRouter>
   </Provider>,
   document.getElementById('root')
 );
