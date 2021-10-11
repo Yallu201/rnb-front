@@ -11,9 +11,13 @@ const FETCH_STOCK_DETAIL = 'stock/FETCH_STOCK_DETAIL';
 const FETCH_STOCK_DETAIL_SUCCESS = 'stock/FETCH_STOCK_DETAIL_SUCCESS';
 
 const fetchMarket = market =>
-  fetch(`http://127.0.0.1:8000/api/stockinfo/${market}/`);
+  fetch(`http://127.0.0.1:8000/api/stockinfo/${market}/`).catch(e =>
+    console.error(e)
+  );
 const fetchDetail = stockCode =>
-  fetch(`http://127.0.0.1:8000/api/stockinfo/searchdetailinfo/${stockCode}/`);
+  fetch(
+    `http://127.0.0.1:8000/api/stockinfo/searchdetailinfo/${stockCode}/`
+  ).catch(e => console.error(e));
 // action creator
 export const changeKey = createAction(CHANGE_KEY, key => key);
 export const selectItem = createAction(SELECT_ITEM, stockName => stockName);
