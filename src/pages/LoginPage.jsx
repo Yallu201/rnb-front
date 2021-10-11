@@ -2,12 +2,15 @@ import React from 'react';
 import { FormControl, Input, Button } from '@chakra-ui/react';
 import { useInputs } from '../hooks';
 import { useCallback } from 'react';
+import { requestLogin } from '../modules/auth';
+import { useDispatch } from 'react-redux';
 const LoginPage = () => {
+  const dispatch = useDispatch();
   const [form, onChange] = useInputs({ userID: '', userPassword: '' });
   const onSubmit = useCallback(
     e => {
       e.preventDefault();
-      console.log(e);
+      dispatch(requestLogin(form));
     },
     [form]
   );
