@@ -15,7 +15,6 @@ const MainBoard = () => {
     <div className="grid grid-cols-3 gap-4 h-full">
       <div className="col-span-2 grid grid-rows-2 gap-4 ">
         <StockDetail />
-        <StockChart />
       </div>
       <div className="col-span-1 h-full">
         <StockList />
