@@ -1,5 +1,4 @@
 import { createAction, handleActions } from 'redux-actions';
-import createRequestThunk from '../lib/createRequestThunk';
 
 // action name
 const SET_AUTH = 'auth/SET_AUTH';
@@ -9,13 +8,16 @@ export const changeKey = createAction(SET_AUTH, key => key);
 
 // thunks
 export const requestLogin = info => dispatch => {
-  const url = 'http://127.0.0.1:8000/api/account/';
+  const url = 'http://127.0.0.1:8000/api/account/login/';
   async function post() {
     try {
       const response = await postData(url, info);
-      const { accessToken } = response.data;
+      const data = await response.json();
+      const { user, token } = data;
+      sessionStorage.setItem('token', token);
+      sessionStorage.setItem('username', user.username);
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   }
   post();
@@ -49,8 +51,7 @@ function postData(url = '', data = {}) {
     referrer: 'no-referrer', // no-referrer, *client
     body: JSON.stringify(data), // body data type must match "Content-Type" header
     credentials: 'same-origin',
-  }).then(response => {
-    console.log(response);
-    response.json();
-  }); // parses JSON response into native JavaScript objects
+  }).catch(e => {
+    console.error(e);
+  });
 }
