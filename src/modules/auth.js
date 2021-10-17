@@ -4,7 +4,7 @@ import { createAction, handleActions } from 'redux-actions';
 const SET_AUTH = 'auth/SET_AUTH';
 
 // action creator
-export const changeKey = createAction(SET_AUTH, key => key);
+export const setAuth = createAction(SET_AUTH);
 
 // thunks
 export const requestLogin = info => dispatch => {
@@ -13,23 +13,32 @@ export const requestLogin = info => dispatch => {
     try {
       const response = await postData(url, info);
       const data = await response.json();
-      const { user, token } = data;
+      const { user, token, success, message } = data;
+      if (!success) throw new Error(message);
       sessionStorage.setItem('token', token);
       sessionStorage.setItem('username', user.username);
+      dispatch(setAuth(true));
     } catch (e) {
       console.error(e);
     }
   }
   post();
 };
+export const logout = () => dispatch => {
+  sessionStorage.removeItem('token');
+  sessionStorage.removeItem('username');
+  dispatch(setAuth(false));
+};
 
 // initial state
-const initialState = {};
+const initialState = {
+  isLogin: false,
+};
 postData();
 // reducer
 const reducer = handleActions(
   {
-    [SET_AUTH]: (state, { payload: key }) => ({ ...state, key }),
+    [SET_AUTH]: (state, { payload }) => ({ isLogin: payload }),
   },
   initialState
 );
