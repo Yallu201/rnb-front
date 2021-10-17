@@ -34,6 +34,8 @@ const StockChart = () => {
         x: {
           ticks: {
             color: themeColor,
+            maxTicksLimit: 12,
+            maxRotation: 20,
           },
           grid: {
             borderWidth: 0.125,
