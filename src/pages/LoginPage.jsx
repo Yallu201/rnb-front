@@ -6,7 +6,7 @@ import { requestLogin } from '../modules/auth';
 import { useDispatch } from 'react-redux';
 const LoginPage = () => {
   const dispatch = useDispatch();
-  const [form, onChange] = useInputs({ userID: '', userPassword: '' });
+  const [form, onChange] = useInputs({ username: '', password: '' });
   const onSubmit = useCallback(
     e => {
       e.preventDefault();
@@ -20,17 +20,18 @@ const LoginPage = () => {
         <form onSubmit={onSubmit}>
           <FormControl>
             <Input
-              id="userID"
+              id="username"
               placeholder="아이디"
-              value={form.userID}
+              value={form.username}
               onChange={onChange}
             />
           </FormControl>
           <FormControl className="mt-5">
             <Input
-              id="userPassword"
+              id="password"
+              type="password"
               placeholder="비밀번호"
-              value={form.userPassword}
+              value={form.password}
               onChange={onChange}
             />
           </FormControl>
