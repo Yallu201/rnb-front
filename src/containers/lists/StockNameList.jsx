@@ -1,4 +1,4 @@
-import React, { useDispatch, shallowEqual,useEffect, useCallback, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector} from 'react-redux';
 import Post from './Post';
 import Pagination from './Pagination';
