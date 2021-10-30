@@ -1,4 +1,5 @@
 import { createAction, handleActions } from 'redux-actions';
+import { closeToast, showToast } from './toast';
 
 // action name
 const SET_AUTH = 'auth/SET_AUTH';
@@ -18,6 +19,18 @@ export const requestLogin = info => dispatch => {
       sessionStorage.setItem('token', token);
       sessionStorage.setItem('username', user.username);
       dispatch(setAuth(true));
+      dispatch(
+        showToast({
+          title: '로그인 성공',
+          description: `${user.username}님 안녕하세요`,
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+          onCloseComplete: () => {
+            dispatch(closeToast());
+          },
+        })
+      );
     } catch (e) {
       console.error(e);
     }
@@ -28,6 +41,17 @@ export const logout = () => dispatch => {
   sessionStorage.removeItem('token');
   sessionStorage.removeItem('username');
   dispatch(setAuth(false));
+  dispatch(
+    showToast({
+      title: '로그아웃 완료',
+      status: 'success',
+      duration: 5000,
+      isClosable: true,
+      onCloseComplete: () => {
+        dispatch(closeToast());
+      },
+    })
+  );
 };
 
 // initial state
