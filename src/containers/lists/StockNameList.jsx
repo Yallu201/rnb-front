@@ -7,7 +7,7 @@ const StockNameList = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1); //현재 페이지
-  const [postPerPage] = useState(15); //페이지당 포스트 개수
+  const [postsPerPage] = useState(15); //페이지당 포스트 개수
   
   const list = useSelector(_ => _.stock.list);
 
@@ -18,11 +18,11 @@ const StockNameList = () => {
       setLoading(false);
     }
     fetchPosts();
-  }, []);
+  }, list);
 
   //현재페이지 가져오기
-  const indexOfLastPost = currentPage * postPerPage;
-  const indexOfFirstPost = indexOfLastPost - postPerPage;
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = list.slice(indexOfFirstPost, indexOfLastPost);
   
   //클릭 이벤트 페이지 바꾸기 
@@ -32,8 +32,9 @@ const StockNameList = () => {
     <div>
       <Post posts={currentPosts} loading={loading} />
       <Pagination
-        postPerPage={postPerPage}
+        postsPerPage={postsPerPage}
         totalPosts={list.length}
+        currentPage={currentPage}
         paginate={paginate}
       />
     </div>
