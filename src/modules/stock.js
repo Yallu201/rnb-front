@@ -22,7 +22,7 @@ const fetchDetail = stockCode =>
   ).catch(e => console.error(e));
 const fetchBasic = stockCode =>
   fetch(
-    `http:127.0.0.1:8000/api/stockinfo/searchcurrentprice/${stockCode}/`
+    `http://127.0.0.1:8000/api/stockinfo/searchcurrentprice/${stockCode}/`
   ).catch(e => console.error(e));
 // action creator
 export const changeKey = createAction(CHANGE_KEY, key => key);
