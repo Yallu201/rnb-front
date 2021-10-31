@@ -1,7 +1,7 @@
 import { Box, useColorModeValue } from '@chakra-ui/react';
 import { useCallback, memo } from 'react';
 import { useDispatch } from 'react-redux';
-import { selectItem, fetchStockDetail } from '../modules/stock';
+import { selectItem, fetchStockDetail, fetchStockBasic } from '../modules/stock';
 
 const StockName = ({ bookmark, stockCode, stockName }) => {
   const isDark = useColorModeValue(false, true);
@@ -9,6 +9,7 @@ const StockName = ({ bookmark, stockCode, stockName }) => {
   const onClick = useCallback(() => {
     dispatch(selectItem(stockName));
     dispatch(fetchStockDetail(stockCode));
+    dispatch(fetchStockBasic(stockCode));
   }, []);
   const hoverColor = `hover:bg-gray-${isDark ? 500 : 200}`;
   return (
