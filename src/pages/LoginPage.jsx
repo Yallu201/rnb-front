@@ -5,12 +5,21 @@ import { useCallback, useEffect } from 'react';
 import { requestLogin } from '../modules/auth';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import NotifyToast from './Toast/NotifyToast';
+
 const LoginPage = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const isLogin = useSelector(_ => _.auth.isLogin);
   useEffect(() => {
-    if (isLogin) history.push('/');
+    if (isLogin) {
+      NotifyToast(
+        'Login Success',
+        '성공적으로 로그인 되었습니다.',
+        'success'
+      ) 
+      history.push('/');
+    }
   }, [isLogin]);
   const [form, onChange] = useInputs({ username: '', password: '' });
   const onSubmit = useCallback(
