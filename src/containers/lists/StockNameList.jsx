@@ -1,42 +1,39 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useSelector} from 'react-redux';
 import Post from './Post';
-import Pagination from './Pagination';
+import Paging from './Paging';
+import { shallowEqual, useDispatch } from 'react-redux';
 
-const StockNameList = () => {
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1); //현재 페이지
-  const [postsPerPage] = useState(15); //페이지당 포스트 개수
+const StockNameList = ({match, history}) => {
+  const dispatch = useDispatch();
   
-  const list = useSelector(_ => _.stock.list);
+  const {count, page, items} = useSelector(
+    ({event}) => ({
+      count: event.count,
+      page: event.page,
+      items: event.items,
+    }),
+    shallowEqual
+  );
 
-  useEffect(() => {
-    const fetchPosts = () => {
-      setLoading(true);
-      setPosts(list);
-      setLoading(false);
-    }
-    fetchPosts();
-  }, list);
+  useEffect((event) => {
+    dispatch(event.getEvents());
+  }, []);
 
-  //현재페이지 가져오기
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = list.slice(indexOfFirstPost, indexOfLastPost);
+  const setPage = useCallback(
+    (page, event) => {
+      dispatch(event.getEvents(page));
+    },
+    [dispatch],
+  );
   
-  //클릭 이벤트 페이지 바꾸기 
-  const paginate = pageNum => setCurrentPage(pageNum);
-
+//page : 현재 페이지
+//count : 총 item개수
+//setPage : 페이지 설정
   return (
     <div>
-      <Post posts={currentPosts} loading={loading} />
-      <Pagination
-        postsPerPage={postsPerPage}
-        totalPosts={list.length}
-        currentPage={currentPage}
-        paginate={paginate}
-      />
+      <Post events={items} match={match} />
+      <Paging page={page} count={count} setPage={setPage}/>
     </div>
   );
 };
