@@ -6,10 +6,12 @@ import { useMount } from '../hooks';
 import { changeDuration, fetchStockList } from '../modules/stock';
 import StockNameSearchBar from '../components/StockNameSearchBar';
 import StockChart from '../components/StockChart';
+import { Stat, StatLabel, StatNumber, StatHelpText, StatArrow, StatGroup } from "@chakra-ui/react"
+
 const MainBoard = () => {
   const dispatch = useDispatch();
   useMount(() => {
-    dispatch(fetchStockList('KOSPI'));
+    dispatch(fetchStockList());
   });
   return (
     <div className="grid grid-cols-3 gap-4 h-full">
