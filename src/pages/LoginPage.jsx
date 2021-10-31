@@ -6,6 +6,8 @@ import { requestLogin } from '../modules/auth';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import NotifyToast from './Toast/NotifyToast';
+import RegisterAccountDrawer from './Drawer/RegisterAccountDrawer';
+
 
 const LoginPage = () => {
   const history = useHistory();
@@ -54,6 +56,7 @@ const LoginPage = () => {
           <Button width="100%" size="lg" className="mt-8" type="submit">
             로그인
           </Button>
+          <RegisterAccountDrawer />
         </form>
       </div>
     </div>
