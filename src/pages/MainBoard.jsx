@@ -54,6 +54,7 @@ const StockDetail = () => {
             <StatGroup>
               <Stat>
                 <StatLabel>현재주가</StatLabel>
+                <StatNumber fontSize="3xl">
                   {stockBasicPrice.CURRENT} 원
                   <StatHelpText>
                     {stockBasicPrice.POSITIVEFLAG === 1 ? 
@@ -62,6 +63,7 @@ const StockDetail = () => {
                     }
                     {stockBasicPrice.UPDOWNRATE} %
                   </StatHelpText>
+                </StatNumber>
               </Stat>
             </StatGroup>
           </Box>
