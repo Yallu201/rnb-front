@@ -4,7 +4,6 @@ import Post from './Post';
 import Pagination from './Pagination';
 
 const StockNameList = () => {
-  const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1); //현재 페이지
   const [postPerPage] = useState(15); //페이지당 포스트 개수
   const searchList = useSelector(_ => _.stock.searchList);
@@ -28,7 +27,7 @@ const StockNameList = () => {
 
   return (
     <div>
-      <Post posts={currentPosts} loading={loading} />
+      <Post posts={currentPosts} />
       <Pagination
         postPerPage={postPerPage}
         totalPosts={searchList.length}
