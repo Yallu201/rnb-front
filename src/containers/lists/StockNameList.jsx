@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Post from './Post';
 import Pagination from './Pagination';
@@ -22,16 +22,13 @@ const StockNameList = () => {
     setCurrentPosts(currentPosts_);
   }, [searchList, currentPage, postPerPage]);
 
-  //클릭 이벤트 페이지 바꾸기
-  const paginate = useCallback(pageNum => setCurrentPage(pageNum), []);
-
   return (
     <div>
       <Post posts={currentPosts} />
       <Pagination
         postPerPage={postPerPage}
         totalPosts={searchList.length}
-        paginate={paginate}
+        paginate={setCurrentPage}
       />
     </div>
   );
