@@ -45,6 +45,7 @@ export const fetchStockBasic = createRequestThunk(
 const initialState = {
   key: '',
   list: [],
+  searchList: [],
   selected: {
     stockCode: '종목을 선택하세요',
     stockName: '',
@@ -63,7 +64,11 @@ const initialState = {
 // reducer
 const reducer = handleActions(
   {
-    [CHANGE_KEY]: (state, { payload: key }) => ({ ...state, key }),
+    [CHANGE_KEY]: (state, { payload: key }) => ({ 
+      ...state, 
+      key: key,
+      searchList: state.list.filter(item => item.stockName.toLowerCase().includes(key.toLowerCase())) 
+    }),
     [SELECT_ITEM]: (state, { payload: stockName }) => ({
       ...state,
       selected: state.list.find(item => item.stockName === stockName),
@@ -75,6 +80,7 @@ const reducer = handleActions(
     [FETCH_STOCK_LIST_SUCCESS]: (state, { payload: data }) => ({
       ...state,
       list: data,
+      searchList: data,
     }),
     [FETCH_STOCK_DETAIL_SUCCESS]: (state, { payload: detail }) => ({
       ...state,
