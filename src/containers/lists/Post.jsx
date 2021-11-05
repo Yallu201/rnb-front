@@ -1,10 +1,6 @@
 import StockName from '../../components/StockName';
 
-const Post = ({posts, loading }) => {
-
-  if (loading) {
-    return <h2> Loading ... </h2>;
-  }
+const Post = ({ posts }) => {
 
   return (
     <ul>
