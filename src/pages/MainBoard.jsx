@@ -1,15 +1,17 @@
 import { useCallback, useState } from 'react';
-import { Flex, Text, Button } from '@chakra-ui/react';
+import { Flex, Text, Button, Box, Spacer } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import StockNameList from '../containers/lists/StockNameList';
 import { useMount } from '../hooks';
 import { changeDuration, fetchStockList } from '../modules/stock';
 import StockNameSearchBar from '../components/StockNameSearchBar';
 import StockChart from '../components/StockChart';
+import { Stat, StatLabel, StatNumber, StatHelpText, StatArrow, StatGroup } from "@chakra-ui/react"
+
 const MainBoard = () => {
   const dispatch = useDispatch();
   useMount(() => {
-    dispatch(fetchStockList('KOSPI'));
+    dispatch(fetchStockList());
   });
   return (
     <div className="grid grid-cols-3 gap-4 h-full">
@@ -33,6 +35,7 @@ const StockDetail = () => {
   ]);
   const duration = useSelector(_ => _.stock.duration);
   const selectedStock = useSelector(_ => _.stock.selected);
+  const stockBasicPrice = useSelector(_ => _.stock.priceBasic);
   const { stockCode, stockName } = selectedStock;
   const onChangeDuration = useCallback(e =>
     dispatch(changeDuration(e.target.id))
@@ -45,8 +48,27 @@ const StockDetail = () => {
           {stockCode}
         </Text>
       </Flex>
-      <Flex className="mb-6">
-        {durations.map(d => (
+      {selectedStock.stockName !== '' && (
+        <Flex className="mb-6">
+          <Box>
+            <StatGroup>
+              <Stat>
+                <StatLabel>현재주가</StatLabel>
+                <StatNumber fontSize="3xl">
+                  {stockBasicPrice.CURRENT} 원
+                  <StatHelpText>
+                    {stockBasicPrice.POSITIVEFLAG === 1 ? 
+                      (<StatArrow type="increase" />) :
+                      (<StatArrow type="decrease" />)
+                    }
+                    {stockBasicPrice.UPDOWNRATE} %
+                  </StatHelpText>
+                </StatNumber>
+              </Stat>
+            </StatGroup>
+          </Box>
+          <Spacer />
+          {durations.map(d => (
           <Button
             key={`duration_button_${d}`}
             id={d}
@@ -57,8 +79,9 @@ const StockDetail = () => {
           >
             {d}
           </Button>
-        ))}
-      </Flex>
+          ))}
+        </Flex>
+      )}
       <StockChart />
     </div>
   );
