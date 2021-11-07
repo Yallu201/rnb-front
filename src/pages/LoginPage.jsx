@@ -5,6 +5,7 @@ import { useCallback, useEffect } from 'react';
 import { requestLogin } from '../modules/auth';
 import { Link, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import RegisterAccountDrawer from '../components/Drawer/RegisterAccountDrawer';
 const LoginPage = () => {
   const history = useHistory();
   const dispatch = useDispatch();
@@ -52,6 +53,7 @@ const LoginPage = () => {
               <Button width="100%" size="lg" className="mt-8" type="submit">
                 로그인
               </Button>
+              <RegisterAccountDrawer />
             </form>
           </div>
         </div>
