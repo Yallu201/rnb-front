@@ -61,7 +61,7 @@ const StockNameList = () => {
         pageCount={pageCount} 
         pageRangeDisplayed={10} 
         marginPagesDisplayed={0}
-        breakLabel="..."
+        breakLabel=""
         previousLabel={"<"}
         nextLabel={">"}
         onPageChange={handlePageClick}
