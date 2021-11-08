@@ -15,6 +15,10 @@ const Pagination = () => {
   );
   const [pageNumbers, setPageNumbers] = useState([]);
   useEffect(() => {
+    if (pagesTotalCount === 0) {
+      setPageNumbers([]);
+      return;
+    }
     let startPage = 1;
     for (let i = 1; i <= pageGroupTotalCount; i++) {
       if (currentPage <= i * pageGroupSize) break;
