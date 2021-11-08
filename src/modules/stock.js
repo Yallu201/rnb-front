@@ -1,10 +1,10 @@
 import { createAction, handleActions } from 'redux-actions';
 import createRequestThunk from '../lib/createRequestThunk';
-
 // action name
 const CHANGE_KEY = 'stock/CHANGE_KEY';
 const SELECT_ITEM = 'stock/SELECT_ITEM';
 const CHNAGE_DURATION = 'stock/CHNAGE_DURATION';
+const CHANGE_PAGE = 'stock/CHANGE_PAGE';
 const FETCH_STOCK_LIST = 'stock/FETCH_STOCK_LIST';
 const FETCH_STOCK_LIST_SUCCESS = 'stock/FETCH_STOCK_LIST_SUCCESS';
 const FETCH_STOCK_DETAIL = 'stock/FETCH_STOCK_DETAIL';
@@ -31,6 +31,8 @@ export const changeDuration = createAction(
   CHNAGE_DURATION,
   duration => duration
 );
+export const changePage = createAction(CHANGE_PAGE, page => page);
+
 export const fetchStockList = createRequestThunk(FETCH_STOCK_LIST, fetchMarket);
 export const fetchStockDetail = createRequestThunk(
   FETCH_STOCK_DETAIL,
@@ -39,7 +41,7 @@ export const fetchStockDetail = createRequestThunk(
 export const fetchStockBasic = createRequestThunk(
   FETCH_STOCK_BASICPRICE,
   fetchBasic
-)
+);
 
 // initial state
 const initialState = {
@@ -58,17 +60,41 @@ const initialState = {
     TENYEARS: [],
     THREEMONTH: [],
   },
-  priceBasic: {}
+  priceBasic: {},
+  pagenation: {
+    currentPage: 1,
+    pagesTotalCount: null, // 페이지 총 개수
+    itemsPerPage: 15, // 한번에 보여주는 최대 아이템 개수
+    pageGroupSize: 8, // 한번에 보여주는 최대 페이지 개수
+    pageGroupTotalCount: null, // 페이지 그룹 총 개수
+  },
 };
 
 // reducer
 const reducer = handleActions(
   {
-    [CHANGE_KEY]: (state, { payload: key }) => ({ 
-      ...state, 
-      key: key,
-      searchList: state.list.filter(item => item.stockName.toLowerCase().includes(key.toLowerCase())) 
-    }),
+    [CHANGE_KEY]: (state, { payload: key }) => {
+      const searchList = state.list.filter(item =>
+        item.stockName.toLowerCase().includes(key.toLowerCase())
+      );
+      const pagesTotalCount = Math.ceil(
+        searchList.length / state.pagenation.itemsPerPage
+      );
+      const pageGroupTotalCount = Math.ceil(
+        pagesTotalCount / state.pagenation.pageGroupSize
+      );
+      return {
+        ...state,
+        key,
+        searchList,
+        pagenation: {
+          ...state.pagenation,
+          currentPage: 1,
+          pagesTotalCount,
+          pageGroupTotalCount,
+        },
+      };
+    },
     [SELECT_ITEM]: (state, { payload: stockName }) => ({
       ...state,
       selected: state.list.find(item => item.stockName === stockName),
@@ -77,11 +103,33 @@ const reducer = handleActions(
       ...state,
       duration,
     }),
-    [FETCH_STOCK_LIST_SUCCESS]: (state, { payload: data }) => ({
-      ...state,
-      list: data,
-      searchList: data,
-    }),
+    [CHANGE_PAGE]: (state, { payload: page }) => {
+      const { pagesTotalCount } = state.pagenation;
+      const currentPage = Math.min(Math.max(1, page), pagesTotalCount);
+      return {
+        ...state,
+        pagenation: { ...state.pagenation, currentPage },
+      };
+    },
+    [FETCH_STOCK_LIST_SUCCESS]: (state, { payload: data }) => {
+      const pagesTotalCount = Math.ceil(
+        data.length / state.pagenation.itemsPerPage
+      );
+      const pageGroupTotalCount = Math.ceil(
+        pagesTotalCount / state.pagenation.pageGroupSize
+      );
+      return {
+        ...state,
+        list: data,
+        searchList: data,
+        pagenation: {
+          ...state.pagenation,
+          currentPage: 1,
+          pagesTotalCount, // 페이지 총 개수
+          pageGroupTotalCount, // 페이지 그룹 총 개수
+        },
+      };
+    },
     [FETCH_STOCK_DETAIL_SUCCESS]: (state, { payload: detail }) => ({
       ...state,
       duration: 'ONEMONTH',
@@ -89,8 +137,8 @@ const reducer = handleActions(
     }),
     [FETCH_STOCK_BASICPRICE_SUCCESS]: (state, { payload: data }) => ({
       ...state,
-      priceBasic: data
-    })
+      priceBasic: data,
+    }),
   },
   initialState
 );
