@@ -22,7 +22,7 @@ function createRequestThunk(type, request) {
         payload: e,
         error: true,
       });
-      throw e;
+      console.error(e);
     } finally {
       dispatch(finishLoading(type));
     }
