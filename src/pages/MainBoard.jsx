@@ -10,8 +10,11 @@ import { Stat, StatLabel, StatNumber, StatHelpText, StatArrow, StatGroup } from 
 
 const MainBoard = () => {
   const dispatch = useDispatch();
+  const stockList = useSelector(_=>_.stock.list);
   useMount(() => {
-    dispatch(fetchStockList());
+    if(stockList.length===0){
+      dispatch(fetchStockList());
+    }
   });
   return (
     <div className="grid grid-cols-3 gap-4 h-full">
