@@ -8,9 +8,8 @@ const Post = ({ posts }) => {
   return (
     <ul>
       {loading && <SkeletonArea />}
-      {posts.map(item => (
-        <StockName key={item.stockCode} {...item} />
-      ))}
+      {loading ||
+        posts.map(item => <StockName key={item.stockCode} {...item} />)}
     </ul>
   );
 };
