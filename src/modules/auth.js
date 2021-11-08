@@ -33,6 +33,18 @@ export const requestLogin = info => dispatch => {
       );
     } catch (e) {
       console.error(e);
+      dispatch(
+        showToast({
+          title: '로그인 실패',
+          description: e.message,
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+          onCloseComplete: () => {
+            dispatch(closeToast());
+          },
+        })
+      );
     }
   }
   post();
