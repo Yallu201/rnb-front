@@ -7,7 +7,6 @@ import { changeDuration, fetchStockList } from '../modules/stock';
 import StockNameSearchBar from '../components/StockNameSearchBar';
 import StockChart from '../components/StockChart';
 import { Stat, StatLabel, StatNumber, StatHelpText, StatArrow, StatGroup } from "@chakra-ui/react"
-
 const MainBoard = () => {
   const dispatch = useDispatch();
   const stockList = useSelector(_=>_.stock.list);
@@ -91,9 +90,11 @@ const StockDetail = () => {
 };
 const StockList = () => {
   return (
-    <div className="py-3 px-2 border rounded">
-      <StockNameSearchBar />
-      <StockNameList />
+    <div className="py-3 px-2 border rounded h-full">
+      <div className="flex flex-col justify-between h-full">
+        <StockNameSearchBar />
+        <StockNameList />
+      </div>
     </div>
   );
 };
