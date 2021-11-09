@@ -6,6 +6,16 @@ const StockChart = () => {
   const isDark = useColorModeValue(false, true);
   const duration = useSelector(_ => _.stock.duration);
   const detailData = useSelector(_ => _.stock.detail[duration]);
+  const pointRadiusMap = useMemo(
+    () => ({
+      ONEMONTH: 5,
+      THREEMONTH: 4,
+      SIXMONTH: 0,
+      ONEYEAR: 0,
+      TENYEARS: 0,
+    }),
+    []
+  );
   const data = useMemo(() => {
     return {
       labels: detailData.map(o => o['날짜'].split(' ')[0]),
@@ -14,12 +24,12 @@ const StockChart = () => {
           label: null,
           data: detailData.map(o => o['종가']),
           borderColor: 'rgb(86, 115, 235)',
-          pointRadius: 4,
+          pointRadius: pointRadiusMap[duration],
           pointBackgroundColor: 'rgb(86, 115, 235)',
         },
       ],
     };
-  }, [detailData]);
+  }, [detailData, pointRadiusMap, duration]);
   const options = useMemo(() => {
     const themeColor = isDark
       ? 'rgba(255, 255, 255, 0.92)' // --chakra-colors-whiteAlpha-900
