@@ -6,7 +6,7 @@ import StockName from '../../components/StockName';
 const Post = ({ posts }) => {
   const loading = useSelector(_ => _.loading['stock/FETCH_STOCK_LIST']);
   return (
-    <ul>
+    <ul className="flex-grow">
       {loading && <SkeletonArea />}
       {loading ||
         posts.map(item => <StockName key={item.stockCode} {...item} />)}
