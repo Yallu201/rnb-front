@@ -46,7 +46,7 @@ const StockName = ({ bookmark = false, stockName, stockCode }) => {
   );
   return (
     <Box
-      className={`p-2 pl-4 mb-1 cursor-pointer rounded ${hoverColor}`}
+      className={`p-2 px-3 mb-1 cursor-pointer rounded ${hoverColor}`}
       onClick={onClick}
     >
       <Flex align="center" justify="space-between">
