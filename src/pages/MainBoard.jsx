@@ -7,6 +7,8 @@ import { changeDuration, fetchStockList } from '../modules/stock';
 import StockNameSearchBar from '../components/StockNameSearchBar';
 import StockChart from '../components/StockChart';
 import { Stat, StatLabel, StatNumber, StatHelpText, StatArrow, StatGroup } from "@chakra-ui/react"
+import Pagination from '../containers/lists/Pagination';
+
 const MainBoard = () => {
   const dispatch = useDispatch();
   const stockList = useSelector(_=>_.stock.list);
@@ -94,6 +96,7 @@ const StockList = () => {
       <div className="flex flex-col justify-between h-full">
         <StockNameSearchBar />
         <StockNameList />
+        <Pagination />
       </div>
     </div>
   );

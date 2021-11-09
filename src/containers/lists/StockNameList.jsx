@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Post from './Post';
-import Pagination from './Pagination';
 
 const StockNameList = () => {
   const itemsPerPage = useSelector(_ => _.stock.pagenation.itemsPerPage); //페이지당 포스트 개수
@@ -17,12 +16,7 @@ const StockNameList = () => {
     setCurrentPosts(currentPosts_);
   }, [searchList, currentPage, itemsPerPage]);
 
-  return (
-    <>
-      <Post posts={currentPosts} />
-      <Pagination />
-    </>
-  );
+  return <Post posts={currentPosts} />;
 };
 
 export default StockNameList;
