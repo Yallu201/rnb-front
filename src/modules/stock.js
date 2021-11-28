@@ -5,6 +5,7 @@ const CHANGE_KEY = 'stock/CHANGE_KEY';
 const SELECT_ITEM = 'stock/SELECT_ITEM';
 const CHNAGE_DURATION = 'stock/CHNAGE_DURATION';
 const CHANGE_PAGE = 'stock/CHANGE_PAGE';
+const TOGGLE_BOOKMARK = 'stock/TOGGLE_BOOKMARK';
 const FETCH_STOCK_LIST = 'stock/FETCH_STOCK_LIST';
 const FETCH_STOCK_LIST_SUCCESS = 'stock/FETCH_STOCK_LIST_SUCCESS';
 const FETCH_STOCK_DETAIL = 'stock/FETCH_STOCK_DETAIL';
@@ -32,6 +33,7 @@ export const changeDuration = createAction(
   duration => duration
 );
 export const changePage = createAction(CHANGE_PAGE, page => page);
+export const toggleBookmark = createAction(TOGGLE_BOOKMARK);
 
 export const fetchStockList = createRequestThunk(FETCH_STOCK_LIST, fetchMarket);
 export const fetchStockDetail = createRequestThunk(
@@ -111,6 +113,21 @@ const reducer = handleActions(
         pagenation: { ...state.pagenation, currentPage },
       };
     },
+    [TOGGLE_BOOKMARK]: (state, { payload: { stockCode, bookmark } }) => {
+      const list = state.list.map(item => {
+        if (item.stockCode === stockCode) {
+          return { ...item, bookmark: !bookmark };
+        }
+        return item;
+      });
+      const searchList = state.searchList.map(item => {
+        if (item.stockCode === stockCode) {
+          return { ...item, bookmark: !bookmark };
+        }
+        return item;
+      });
+      return { ...state, list, searchList };
+    },
     [FETCH_STOCK_LIST_SUCCESS]: (state, { payload: data }) => {
       const pagesTotalCount = Math.ceil(
         data.length / state.pagenation.itemsPerPage
@@ -118,10 +135,15 @@ const reducer = handleActions(
       const pageGroupTotalCount = Math.ceil(
         pagesTotalCount / state.pagenation.pageGroupSize
       );
+      const stars = localStorage.getItem('stars') || '';
+      const bookmarkedList = data.map(item => {
+        const bookmark = stars.includes(item.stockCode);
+        return { ...item, bookmark };
+      });
       return {
         ...state,
-        list: data,
-        searchList: data,
+        list: bookmarkedList,
+        searchList: bookmarkedList,
         pagenation: {
           ...state.pagenation,
           currentPage: 1,
