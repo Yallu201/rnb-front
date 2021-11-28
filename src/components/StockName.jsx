@@ -1,22 +1,10 @@
 import { Box, Flex, useColorModeValue } from '@chakra-ui/react';
 import { useCallback, memo, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import {
-  selectItem,
-  fetchStockDetail,
-  fetchStockBasic,
-} from '../modules/stock';
 import { StarIcon } from '@chakra-ui/icons';
 import { useMount } from '../hooks';
 
-const StockName = ({ bookmark = false, stockName, stockCode }) => {
+const StockName = ({ bookmark = false, stockName, stockCode, onClick }) => {
   const isDark = useColorModeValue(false, true);
-  const dispatch = useDispatch();
-  const onClick = useCallback(() => {
-    dispatch(selectItem(stockName));
-    dispatch(fetchStockDetail(stockCode));
-    dispatch(fetchStockBasic(stockCode));
-  }, []);
   const hoverColor = `hover:bg-gray-${isDark ? 500 : 200}`;
   const [isStar, setIsStar] = useState(bookmark);
   useMount(() => {
