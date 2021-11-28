@@ -1,5 +1,12 @@
-import React from 'react';
-import { IconButton, useDisclosure, Stack, Box, FormLabel, Input } from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
+import {
+  IconButton,
+  useDisclosure,
+  Stack,
+  Box,
+  FormLabel,
+  Input,
+} from '@chakra-ui/react';
 import {
   Drawer,
   DrawerBody,
@@ -8,44 +15,64 @@ import {
   DrawerOverlay,
   DrawerContent,
   DrawerCloseButton,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react';
 import { StarIcon } from '@chakra-ui/icons';
+import { useSelector } from 'react-redux';
+import StockName from '../StockName';
 
 const BookmarkDrawing = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const firstField = React.useRef();
-
+  const stocks = useSelector(_ => _.stock.list);
+  const [starList, setStarList] = useState([]);
+  useEffect(() => {
+    const nextStarList = stocks.filter(item => item.bookmark);
+    setStarList(nextStarList);
+  }, [stocks]);
   return (
-  <>
-        <IconButton size="md" variant="ghost" icon={<StarIcon/>} onClick={onOpen}/>
-        <Drawer
-          isOpen={isOpen}
-          placement="right"
-          initialFocusRef={firstField}
-          onClose={onClose}
-          size={"xs"}
-        >
-          <DrawerOverlay />
-          <DrawerContent>
-            <DrawerCloseButton />
-            <DrawerHeader borderBottomWidth="1px">
-              <StarIcon/>
-            </DrawerHeader>
+    <>
+      <IconButton
+        size="md"
+        variant="ghost"
+        icon={<StarIcon />}
+        onClick={onOpen}
+      />
+      <Drawer
+        isOpen={isOpen}
+        placement="right"
+        initialFocusRef={firstField}
+        onClose={onClose}
+        size={'xs'}
+      >
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerCloseButton />
+          <DrawerHeader borderBottomWidth="1px">
+            <StarIcon />
+          </DrawerHeader>
 
-            <DrawerBody>
-              <Stack spacing="24px">
-                <Box>
-                  <FormLabel htmlFor="stockName">관심종목</FormLabel>
-                  <Input
-                    ref={firstField}
-                    id="stockName"
-                    placeholder="즐겨찾기 해둔 종목을 검색하세요!"
+          <DrawerBody>
+            <Stack spacing="24px">
+              <Box>
+                <FormLabel htmlFor="stockName">관심종목</FormLabel>
+                <Input
+                  ref={firstField}
+                  id="stockName"
+                  placeholder="즐겨찾기 해둔 종목을 검색하세요!"
+                />
+              </Box>
+              {starList.map(item => {
+                return (
+                  <StockName
+                    key={`drawer_star_item${item.stockCode}`}
+                    {...item}
                   />
-                </Box>
-              </Stack>
-            </DrawerBody>
-          </DrawerContent>
-        </Drawer>
+                );
+              })}
+            </Stack>
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
     </>
   );
 };
