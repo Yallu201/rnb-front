@@ -70,7 +70,7 @@ export const logout = () => dispatch => {
 const initialState = {
   isLogin: false,
 };
-postData();
+
 // reducer
 const reducer = handleActions(
   {
