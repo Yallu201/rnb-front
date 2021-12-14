@@ -49,6 +49,32 @@ export const requestLogin = info => dispatch => {
   }
   post();
 };
+export const requestUserStockInfo = token => dispatch => {
+  const url = 'http://127.0.0.1:8000/api/userstockinfo/';
+  async function post() {
+    try {
+      const response = await postData(url, null, token);
+      const data = await response.json();
+      console.log(data);
+      if (!data.success) throw new Error(data.message);
+    } catch (e) {
+      console.error(e);
+      dispatch(
+        showToast({
+          title: '로그인 실패',
+          description: e.message,
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+          onCloseComplete: () => {
+            dispatch(closeToast());
+          },
+        })
+      );
+    }
+  }
+  post();
+};
 export const logout = () => dispatch => {
   sessionStorage.removeItem('token');
   sessionStorage.removeItem('username');
@@ -70,7 +96,6 @@ export const logout = () => dispatch => {
 const initialState = {
   isLogin: false,
 };
-postData();
 // reducer
 const reducer = handleActions(
   {
@@ -81,7 +106,7 @@ const reducer = handleActions(
 
 export default reducer;
 
-function postData(url = '', data = {}) {
+export function postData(url = '', data = {}, Authorization = '') {
   // Default options are marked with *
   return fetch(url, {
     method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -89,6 +114,7 @@ function postData(url = '', data = {}) {
     cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
     credentials: 'same-origin', // include, *same-origin, omit
     headers: {
+      Authorization,
       'Content-Type': 'application/json',
       // 'Content-Type': 'application/x-www-form-urlencoded',
     },
