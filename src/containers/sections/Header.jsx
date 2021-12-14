@@ -3,12 +3,14 @@ import { Heading, Button, Text, Flex } from '@chakra-ui/react';
 import { Link, useHistory } from 'react-router-dom';
 import { ColorModeSwitcher } from '../../ColorModeSwitcher';
 import { useSession } from '../../hooks';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import BookmarkDrawing from '../../components/Drawer/BookmarkDrawing';
 import UserInfoDrawing from '../../components/Drawer/UserInfoDrawing';
 import LogoutModal from '../../components/Modal/LogoutModal';
+import { requestUserStockInfo } from '../../modules/auth';
 
 const Header = () => {
+  const dispatch = useDispatch();
   const history = useHistory();
 
   const isLogin = useSelector(_ => _.auth.isLogin);
@@ -17,6 +19,10 @@ const Header = () => {
   useEffect(() => {
     updateSessionInfo();
   }, [isLogin]);
+
+  useEffect(() => {
+    dispatch(requestUserStockInfo(token));
+  }, [token]);
 
   const onClickLogin = useCallback(() => history.push('/login'), []);
 
