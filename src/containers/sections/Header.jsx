@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import BookmarkDrawing from '../../components/Drawer/BookmarkDrawing';
 import UserInfoDrawing from '../../components/Drawer/UserInfoDrawing';
 import LogoutModal from '../../components/Modal/LogoutModal';
-import { requestUserStockInfo } from '../../modules/auth';
+import { getUserStockInfo } from '../../modules/user';
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -21,8 +21,8 @@ const Header = () => {
   }, [isLogin]);
 
   useEffect(() => {
-    dispatch(requestUserStockInfo(token));
-  }, [token]);
+    dispatch(getUserStockInfo({ token, username }));
+  }, [username]);
 
   const onClickLogin = useCallback(() => history.push('/login'), []);
 
