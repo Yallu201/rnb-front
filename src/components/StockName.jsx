@@ -8,6 +8,7 @@ import {
   fetchStockDetail,
   selectItem,
 } from '../modules/stock';
+import { postUserStockInfo } from '../modules/user';
 
 const StockName = ({ bookmark, stockName, stockCode }) => {
   const dispatch = useDispatch();
@@ -26,6 +27,7 @@ const StockName = ({ bookmark, stockName, stockCode }) => {
       const stars_ = stars.replace(token, '');
       localStorage.setItem('stars', stars_.concat(bookmark ? '' : token));
       dispatch(toggleBookmark({ stockCode, bookmark }));
+      dispatch(postUserStockInfo([{ stockCode }]));
     },
     [bookmark]
   );
