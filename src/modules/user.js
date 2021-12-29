@@ -36,6 +36,20 @@ export const postUserStockInfo = bookmarkArray => dispatch => {
   }
   post();
 };
+export const deleteUserStockInfo = userStockInfo => dispatch => {
+  const token = sessionStorage.getItem('token');
+  async function requestDelete() {
+    try {
+      const url = `http://127.0.0.1:8000/api/userstockinfo/`;
+      const jwt = `JWT ${token}`;
+      const data = { UserStockInfo: userStockInfo };
+      await deleteData(url, jwt, data);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+  requestDelete();
+};
 
 // initial state
 const initialState = {
@@ -74,6 +88,26 @@ export function postData(url = '', Authorization = '', data = null) {
   // Default options are marked with *
   return fetch(url, {
     method: 'POST', // *GET, POST, PUT, DELETE, etc.
+    mode: 'cors', // no-cors, cors, *same-origin
+    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: 'same-origin', // include, *same-origin, omit
+    headers: {
+      Authorization,
+      'Content-Type': 'application/json',
+    },
+    redirect: 'follow', // manual, *follow, error
+    referrer: 'no-referrer', // no-referrer, *client
+    credentials: 'same-origin',
+    body: JSON.stringify(data),
+  }).catch(e => {
+    console.error(e);
+  });
+}
+
+export function deleteData(url = '', Authorization = '', data = null) {
+  // Default options are marked with *
+  return fetch(url, {
+    method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
     mode: 'cors', // no-cors, cors, *same-origin
     cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
     credentials: 'same-origin', // include, *same-origin, omit

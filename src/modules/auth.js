@@ -1,6 +1,9 @@
 import { createAction, handleActions } from 'redux-actions';
 import { closeToast, showToast } from './toast';
 
+// sessionStorage에 token이 존재하면, 로그인 처리
+const isTokenExist = !!sessionStorage.getItem('token');
+
 // action name
 const SET_AUTH = 'auth/SET_AUTH';
 
@@ -68,7 +71,7 @@ export const logout = () => dispatch => {
 
 // initial state
 const initialState = {
-  isLogin: false,
+  isLogin: isTokenExist,
 };
 // reducer
 const reducer = handleActions(
