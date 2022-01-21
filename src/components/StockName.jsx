@@ -9,9 +9,13 @@ import {
   selectItem,
 } from '../modules/stock';
 import { deleteUserStockInfo, postUserStockInfo } from '../modules/user';
+import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
 
 const StockName = ({ bookmark, stockName, stockCode }) => {
   const dispatch = useDispatch();
+  const history = useHistory();
+  const isLogin = useSelector(_ => _.auth.isLogin);
   const isDark = useColorModeValue(false, true);
   const hoverColor = `hover:bg-gray-${isDark ? 500 : 200}`;
   const onClick = useCallback(() => {
@@ -22,6 +26,10 @@ const StockName = ({ bookmark, stockName, stockCode }) => {
   const onClickStar = useCallback(
     e => {
       e.stopPropagation(); // 상위 Element로 이벤트 전파 차단( 버블링, 캡쳐링 )
+      if (!isLogin) {
+        alert('로그인 후 사용 가능합니다.');
+        history.push('/login');
+      }
       const stars = localStorage.getItem('stars') || '';
       const token = `,${stockCode}`;
       const stars_ = stars.replace(token, '');
@@ -33,7 +41,7 @@ const StockName = ({ bookmark, stockName, stockCode }) => {
         dispatch(postUserStockInfo([{ stockCode }]));
       }
     },
-    [bookmark]
+    [isLogin, bookmark]
   );
   return (
     <Box

@@ -19,8 +19,10 @@ import {
 import { StarIcon } from '@chakra-ui/icons';
 import { useSelector } from 'react-redux';
 import StockName from '../StockName';
+import { useHistory } from 'react-router';
 
-const BookmarkDrawing = () => {
+const BookmarkDrawing = ({ isLogin }) => {
+  const history = useHistory();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const firstField = React.useRef();
   const stocks = useSelector(_ => _.stock.list);
@@ -29,13 +31,23 @@ const BookmarkDrawing = () => {
     const nextStarList = stocks.filter(item => item.bookmark);
     setStarList(nextStarList);
   }, [stocks]);
+
+  const onClick = () => {
+    if (!isLogin) {
+      alert('로그인 후 이용 가능합니다.');
+      history.push('/login');
+      return;
+    }
+    onOpen();
+  };
+
   return (
     <>
       <IconButton
         size="md"
         variant="ghost"
         icon={<StarIcon />}
-        onClick={onOpen}
+        onClick={onClick}
       />
       <Drawer
         isOpen={isOpen}

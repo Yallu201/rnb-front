@@ -55,6 +55,14 @@ const LoginPage = () => {
               </Button>
               <RegisterAccountDrawer />
             </form>
+            <Button
+              width="100%"
+              size="lg"
+              className="mt-8"
+              onClick={() => history.push('/')}
+            >
+              뒤로가기
+            </Button>
           </div>
         </div>
       </div>

@@ -10,14 +10,23 @@ import {
   DrawerCloseButton,
 } from "@chakra-ui/react";
 import { LockIcon } from '@chakra-ui/icons';
+import { useHistory } from 'react-router';
 
-const UserInfoDrawing = () => {
+const UserInfoDrawing = ({isLogin}) => {
+  const history = useHistory();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const firstField = React.useRef();
-
+  const onClick = () => {
+    if (!isLogin) {
+      alert('로그인 후 이용 가능합니다.');
+      history.push('/login');
+      return;
+    }
+    onOpen();
+  };
   return (
   <>
-        <IconButton size="md" color="current" variant="ghost" icon={<LockIcon/>} onClick={onOpen}/>
+        <IconButton size="md" color="current" variant="ghost" icon={<LockIcon/>} onClick={onClick}/>
         <Drawer
           isOpen={isOpen}
           placement="right"
