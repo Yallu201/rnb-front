@@ -43,7 +43,7 @@ const Header = () => {
         {!isLogin && <Button onClick={onClickLogin}>로그인</Button>}
         <ColorModeSwitcher />
         <BookmarkDrawing isLogin={isLogin} />
-        <UserInfoDrawing />
+        <UserInfoDrawing isLogin={isLogin} />
       </div>
     </div>
   );
