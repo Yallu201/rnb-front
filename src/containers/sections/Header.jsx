@@ -42,7 +42,7 @@ const Header = () => {
         )}
         {!isLogin && <Button onClick={onClickLogin}>로그인</Button>}
         <ColorModeSwitcher />
-        <BookmarkDrawing />
+        <BookmarkDrawing isLogin={isLogin} />
         <UserInfoDrawing />
       </div>
     </div>
